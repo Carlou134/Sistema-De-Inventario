@@ -13,5 +13,7 @@ namespace Sistema_De_Inventario.Interfaces
         int getId();
         void SetId(int id);
         void AgregarDesdeArchivo(IProducto producto);
+        event EventHandler<IProducto>? StockBajo;
+        delegate double AplicarDescuento(IProducto producto);
     }
 }
