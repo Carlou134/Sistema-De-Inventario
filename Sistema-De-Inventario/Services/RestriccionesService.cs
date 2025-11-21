@@ -23,7 +23,7 @@ namespace Sistema_De_Inventario.Services
             {
                 Console.WriteLine(indicacion);
                 input = Console.ReadLine()!;
-                if (string.IsNullOrWhiteSpace(input)) break;
+                if (!string.IsNullOrWhiteSpace(input)) break;
                 else Console.WriteLine("\nIngrese una opción válida!\n");
             }
 
