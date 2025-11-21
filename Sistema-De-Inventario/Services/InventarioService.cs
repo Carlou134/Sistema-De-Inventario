@@ -5,10 +5,12 @@ namespace Sistema_De_Inventario.Services
     public class InventarioService : IInventarioService
     {
         private readonly List<IProducto> _productos;
+        private int Id;
 
         public InventarioService()
         {
             _productos = new List<IProducto>();
+            Id = 0;
         }
 
         public IEnumerable<IProducto> Listar()
@@ -21,12 +23,14 @@ namespace Sistema_De_Inventario.Services
 
         public void Agregar(IProducto producto)
         {
+            this.Id++;
+            producto.Id = this.Id;
             this._productos.Add(producto);
         }
 
         public void Actualizar(int id, IProducto producto)
         {
-            var productoElegido = this._productos.SingleOrDefault(x => x.Id == id);
+            var productoElegido = this._productos.FirstOrDefault(x => x.Id == id);
 
             if(productoElegido != null)
             {
@@ -49,7 +53,7 @@ namespace Sistema_De_Inventario.Services
 
         public void Eliminar(int id)
         {
-            var productoElegido = this._productos.SingleOrDefault(x => x.Id == id);
+            var productoElegido = this._productos.FirstOrDefault(x => x.Id == id);
 
             if (productoElegido != null) productoElegido.Activo = false;
             else Console.WriteLine("No se encontro el producto");
@@ -57,7 +61,7 @@ namespace Sistema_De_Inventario.Services
 
         public IProducto? Buscar(int id)
         {
-            var productoEncontrado = this._productos.SingleOrDefault(x => x.Id == id);
+            var productoEncontrado = this._productos.FirstOrDefault(x => x.Id == id);
             if (productoEncontrado != null)
             {
                 return productoEncontrado;
