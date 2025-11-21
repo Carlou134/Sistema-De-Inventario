@@ -1,3 +1,5 @@
 ﻿using Sistema_De_Inventario.Models;
+using Sistema_De_Inventario.Services;
 
-Menu.DesplegarMenu();
+InventarioService inventarioService = new InventarioService();
+Menu.DesplegarMenu(inventarioService);
