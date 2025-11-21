@@ -21,6 +21,7 @@
         Generico = 0,
         Ropa = 1,
         Bebida = 2,
-        Electronico = 3
+        Electronico = 3,
+        Otros = 4
     }
 }
