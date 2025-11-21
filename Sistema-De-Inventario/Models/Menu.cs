@@ -5,6 +5,8 @@ namespace Sistema_De_Inventario.Models
 {
     public static class Menu
     {
+        public static InventarioService.AplicarDescuento? descuento;
+
         public static void MostrarMenu()
         {
             Console.WriteLine("1. Agregar producto");
@@ -44,6 +46,9 @@ namespace Sistema_De_Inventario.Models
 
         public async static Task DesplegarMenu(InventarioService inventarioService, ArchivoService archivoService)
         {
+            inventarioService.StockBajo += AdvertirStockBajo;
+            descuento = AplicarDescuento;
+
             while (true)
             {
                 MostrarMenu();
@@ -79,7 +84,13 @@ namespace Sistema_De_Inventario.Models
 
             Producto producto = new Producto(nombreProducto, precio, cantidad, 
                 categoria, descripcion, DateTime.Now, proveedor, codigoBarra, sku, true);
-            
+
+            if(descuento != null)
+            {
+                producto.Precio -= descuento(producto);
+                Console.WriteLine("Descuento aplicado");
+            }
+
             inventarioService.Agregar(producto);
 
             Console.WriteLine("\nProducto registrado con éxito\n");
@@ -166,9 +177,15 @@ namespace Sistema_De_Inventario.Models
             inventarioService.Eliminar(idElegido);
         }
 
-        public static void ExportarReporte(InventarioService inventarioService, ArchivoService archivoService)
+        public static void ExportarReporte(InventarioService inventarioService, ArchivoService archivoService) => archivoService.ExportarReporteInventario(inventarioService);
+
+        public static void AdvertirStockBajo(object? sender, IProducto producto) => Console.WriteLine($"\nADVERTENCIA! Stock bajo en el producto: {producto}");
+
+        public static double AplicarDescuento(IProducto producto)
         {
-            archivoService.ExportarReporteInventario(inventarioService);
+            if (producto.Categoria == Categoria.Ropa) return 0.20 * producto.Precio;
+            if (producto.Categoria == Categoria.Electronico) return 0.10 * producto.Precio;
+            return 0;
         }
     }
 

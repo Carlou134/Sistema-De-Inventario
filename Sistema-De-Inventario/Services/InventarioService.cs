@@ -6,6 +6,8 @@ namespace Sistema_De_Inventario.Services
     {
         private readonly List<IProducto> _productos;
         private int Id;
+        public delegate double AplicarDescuento(IProducto producto);
+        public event EventHandler<IProducto>? StockBajo;
 
         public InventarioService()
         {
@@ -37,12 +39,16 @@ namespace Sistema_De_Inventario.Services
                 productoElegido.Nombre = producto.Nombre;
                 productoElegido.Descripcion = producto.Descripcion;
                 productoElegido.Precio = producto.Precio;
+
                 productoElegido.Cantidad = producto.Cantidad;
+                if (productoElegido.Cantidad < 5) this.StockBajo?.Invoke(this, productoElegido);
+
                 productoElegido.Categoria = producto.Categoria;
                 productoElegido.FechaActualizacion = DateTime.Now;
                 productoElegido.Proveedor = producto.Proveedor;
                 productoElegido.CodigoBarra = producto.CodigoBarra;
                 productoElegido.Sku = producto.Sku;
+
                 Console.WriteLine("\nProducto actualizado exitosamente!");
             }
             else
@@ -82,9 +88,8 @@ namespace Sistema_De_Inventario.Services
 
         public void SetId(int id) => this.Id = id;
 
-        public void AgregarDesdeArchivo(IProducto producto)
-        {
-            this._productos.Add(producto);
-        }
+        public void AgregarDesdeArchivo(IProducto producto) => this._productos.Add(producto);
+
+        
     }
 }
