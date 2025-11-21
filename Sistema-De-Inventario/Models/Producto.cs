@@ -32,11 +32,10 @@ namespace Sistema_De_Inventario.Models
             this.Activo = true;
         }
 
-        public Producto(int id, string nombre, double precio, int cantidad, Categoria categoria, 
+        public Producto(string nombre, double precio, int cantidad, Categoria categoria, 
             string descripcion, DateTime fechaCreacion, string proveedor, string codigoBarra, 
             string sku, bool activo)
         {
-            this.Id = id;
             this.Nombre = nombre;
             this.Precio = precio;
             this.Cantidad = cantidad;
@@ -51,7 +50,7 @@ namespace Sistema_De_Inventario.Models
 
         public override string ToString()
         {
-            return $"Producto: {this.Nombre}\nId: {this.Id}\nPrecio: {this.Precio}\nCantidad: {this.Cantidad}\nCategoria: {this.Categoria}";
+            return $"\nProducto: {this.Nombre} | Id: {this.Id} | Precio: {this.Precio} | Codigo de barras: {this.CodigoBarra} | Cantidad: {this.Cantidad} | Categoria: {this.Categoria}";
         }
     }
 }

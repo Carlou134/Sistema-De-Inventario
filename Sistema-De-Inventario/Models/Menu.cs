@@ -5,13 +5,6 @@ namespace Sistema_De_Inventario.Models
 {
     public static class Menu
     {
-        private static int id;
-
-        static Menu()
-        {
-            id = 0;
-        }
-
         public static void MostrarMenu()
         {
             Console.WriteLine("1. Agregar producto");
@@ -62,7 +55,6 @@ namespace Sistema_De_Inventario.Models
 
         public static void Guardar(InventarioService inventarioService)
         {
-            id++;
             Console.WriteLine("Ingrese información del producto a agregar: ");
 
             string nombreProducto = string.Empty;
@@ -83,7 +75,7 @@ namespace Sistema_De_Inventario.Models
             codigoBarra = RestriccionesService.ValidarInputString("Ingrese el codigo de barras: ");
             sku = RestriccionesService.ValidarInputString("Ingrese el sku: ");
 
-            Producto producto = new Producto(id, nombreProducto, precio, cantidad, 
+            Producto producto = new Producto(nombreProducto, precio, cantidad, 
                 categoria, descripcion, DateTime.Now, proveedor, codigoBarra, sku, true);
             
             inventarioService.Agregar(producto);
@@ -153,7 +145,11 @@ namespace Sistema_De_Inventario.Models
                             break;
                     }
 
-                    if (updateSucess) inventarioService.Actualizar(idElegido, producto);
+                    if (updateSucess)
+                    {
+                        inventarioService.Actualizar(idElegido, producto);
+                        break;
+                    }
                 }
             }
             else
