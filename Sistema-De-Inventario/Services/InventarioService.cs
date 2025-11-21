@@ -1,5 +1,4 @@
 ﻿using Sistema_De_Inventario.Interfaces;
-using Sistema_De_Inventario.Models;
 
 namespace Sistema_De_Inventario.Services
 {
@@ -40,6 +39,7 @@ namespace Sistema_De_Inventario.Services
                 productoElegido.Proveedor = producto.Proveedor;
                 productoElegido.CodigoBarra = producto.CodigoBarra;
                 productoElegido.Sku = producto.Sku;
+                Console.WriteLine("\nProducto actualizado exitosamente!");
             }
             else
             {

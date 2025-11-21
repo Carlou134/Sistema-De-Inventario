@@ -1,22 +1,15 @@
 ﻿using Sistema_De_Inventario.Interfaces;
 using Sistema_De_Inventario.Services;
-using System.Runtime.CompilerServices;
 
 namespace Sistema_De_Inventario.Models
 {
     public static class Menu
     {
         private static int id;
-        private static Dictionary<int, Categoria> categoriasList;
 
         static Menu()
         {
             id = 0;
-            categoriasList = new Dictionary<int, Categoria>();
-            categoriasList[1] = Categoria.Ropa;
-            categoriasList[2] = Categoria.Bebida;
-            categoriasList[3] = Categoria.Electronico;
-            categoriasList[4] = Categoria.Otros;
         }
 
         public static void MostrarMenu()
@@ -42,8 +35,8 @@ namespace Sistema_De_Inventario.Models
                     case OpcionesMenu.Agregar: Guardar(inventarioService); break;
                     case OpcionesMenu.Listar: Listar(inventarioService); break;
                     case OpcionesMenu.Buscar: Buscar(inventarioService); break;
-                    case OpcionesMenu.Actualizar: Console.WriteLine("Opcion 4 elegida"); break;
-                    case OpcionesMenu.Eliminar: Console.WriteLine("Opcion 5 elegida"); break;
+                    case OpcionesMenu.Actualizar: Actualizar(inventarioService); break;
+                    case OpcionesMenu.Eliminar: Eliminar(inventarioService); break;
                     case OpcionesMenu.Guardar: Console.WriteLine("Opcion 6 elegida"); break;
                     case OpcionesMenu.Cargar: Console.WriteLine("Opcion 7 elegida"); break;
                 }
@@ -81,59 +74,14 @@ namespace Sistema_De_Inventario.Models
             string sku = string.Empty;
             string descripcion = string.Empty;
 
-            do
-            {
-                Console.WriteLine("Ingrese el nombre del producto: ");
-                nombreProducto = Console.ReadLine()!;
-            } while (string.IsNullOrWhiteSpace(nombreProducto));
-
-            while (true)
-            {
-                Console.WriteLine("Ingrese la cantidad de productos disponibles: ");
-                var cantidadIngresada = Console.ReadLine()!;
-                if (int.TryParse(cantidadIngresada, out cantidad)) break;
-            }
-
-            while (true)
-            {
-                Console.WriteLine("Ingrese el precio del producto: ");
-                var precioIngresado = Console.ReadLine()!;
-                if (double.TryParse(precioIngresado, out precio)) break;
-            }
-
-            while (true)
-            {
-                Console.WriteLine("Ingrese la categoria del producto: (Ropa: 1, Bebida: 2, Electronico: 3, Otros: 4)");
-                var categoriaIngresada = Console.ReadLine()!;
-                if (int.TryParse(categoriaIngresada, out int numero))
-                {
-                    if (categoriasList.TryGetValue(numero, out categoria)) break;
-                }
-            }
-
-            do
-            {
-                Console.WriteLine("Ingrese la descricpion: ");
-                descripcion = Console.ReadLine()!;
-            } while (string.IsNullOrWhiteSpace(descripcion));
-
-            do
-            {
-                Console.WriteLine("Ingrese el nombre del proveedor: ");
-                proveedor = Console.ReadLine()!;
-            } while (string.IsNullOrWhiteSpace(proveedor));
-
-            do
-            {
-                Console.WriteLine("Ingrese el codigo de barras: ");
-                codigoBarra = Console.ReadLine()!;
-            } while (string.IsNullOrWhiteSpace(codigoBarra));
-
-            do
-            {
-                Console.WriteLine("Ingrese el sku: ");
-                sku = Console.ReadLine()!;
-            } while (string.IsNullOrWhiteSpace(sku));
+            nombreProducto = RestriccionesService.ValidarInputString("Ingrese el nombre del producto: ");
+            cantidad = RestriccionesService.ValidarInputEntero("Ingrese la cantidad de productos disponibles: ");
+            precio = RestriccionesService.ValidarInputDouble("Ingrese el precio del producto: ");
+            categoria = RestriccionesService.ValidarCategoria("Ingrese la categoria del producto: (Ropa: 1, Bebida: 2, Electronico: 3, Otros: 4)");
+            descripcion = RestriccionesService.ValidarInputString("Ingrese la descricpion del producto: ");
+            proveedor = RestriccionesService.ValidarInputString("Ingrese el nombre del proveedor: ");
+            codigoBarra = RestriccionesService.ValidarInputString("Ingrese el codigo de barras: ");
+            sku = RestriccionesService.ValidarInputString("Ingrese el sku: ");
 
             Producto producto = new Producto(id, nombreProducto, precio, cantidad, 
                 categoria, descripcion, DateTime.Now, proveedor, codigoBarra, sku, true);
@@ -160,28 +108,64 @@ namespace Sistema_De_Inventario.Models
 
         public static void Buscar(InventarioService inventarioService)
         {
-            int id = 0;
-
-            while(true)
-            {
-                Console.WriteLine("Ingrese el id del producto: ");
-                string input = Console.ReadLine()!;
-                if (int.TryParse(input, out id)) break;
-            }
-
-            var producto = inventarioService.Buscar(id);
+            int idElegido = RestriccionesService.ValidarInputEntero("Ingrese el id del producto: ");
+            var producto = inventarioService.Buscar(idElegido);
             if (producto != null) Console.WriteLine(producto);
-            else Console.Write("\nProducto no encontrado!\n");
+            else Console.WriteLine("\nProducto no encontrado!\n");
         }
 
         public static void Actualizar(InventarioService inventarioService)
         {
+            int idElegido = RestriccionesService.ValidarInputEntero("Ingrese el id del producto que desea actualizar: ");
+            var producto = inventarioService.Buscar(idElegido);
 
+            if (producto != null)
+            {
+                while(true)
+                {
+                    bool updateSucess = true;
+
+                    Console.WriteLine("\nIngrese el dato que desea actualizar: ");
+                    Console.WriteLine("1. Nombre");
+                    Console.WriteLine("2. Precio");
+                    Console.WriteLine("3. Cantidad");
+                    Console.WriteLine("4. Categoria");
+                    Console.WriteLine("5. Descripcion");
+                    Console.WriteLine("6. Proveedor");
+                    Console.WriteLine("7. CodigoBarra");
+                    Console.WriteLine("8. Sku");
+
+                    var opcion = RestriccionesService.ValidarInputEntero("Elija una opción: ");
+
+                    switch(opcion)
+                    {
+                        case 1: producto.Nombre = RestriccionesService.ValidarInputString("Ingrese el nuevo nombre del producto: "); break;
+                        case 2: producto.Precio = RestriccionesService.ValidarInputDouble("Ingrese el nuevo precio del producto: "); break;
+                        case 3: producto.Cantidad = RestriccionesService.ValidarInputEntero("Ingrese la nueva cantidad disponible de productos: "); break;
+                        case 4: producto.Categoria = RestriccionesService.ValidarCategoria("Ingrese la nueva categoria del producto: (Ropa: 1, Bebida: 2, Electronico: 3, Otros: 4)"); break;
+                        case 5: producto.Descripcion = RestriccionesService.ValidarInputString("Ingrese la nueva categoria del producto: "); break;
+                        case 6: producto.Proveedor = RestriccionesService.ValidarInputString("Ingrese el nuevo proveedor: "); break;
+                        case 7: producto.CodigoBarra = RestriccionesService.ValidarInputString("Ingrese el nuevo codigo de barra: "); break;
+                        case 8: producto.Sku = RestriccionesService.ValidarInputString("Ingrese el nuevo sku: "); break;
+                        default: 
+                            Console.WriteLine("Esa opción no es válida");
+                            updateSucess = false;
+                            break;
+                    }
+
+                    if (updateSucess) inventarioService.Actualizar(idElegido, producto);
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nProducto no encontrado!\n");
+            }
         }
 
         public static void Eliminar(InventarioService inventarioService)
         {
-
+            int idElegido = RestriccionesService.ValidarInputEntero("\nIngrese el id del producto que desea eliminar: ");
+            inventarioService.Eliminar(idElegido);
         }
     }
 
