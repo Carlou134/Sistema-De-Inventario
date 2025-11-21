@@ -1,0 +1,58 @@
+[
+  {
+    "Id": 1,
+    "Nombre": "Camiseta Oversize",
+    "Precio": 79.9,
+    "Cantidad": 15,
+    "Categoria": 1,
+    "Descripcion": "Camiseta de algodón premium",
+    "FechaCreacion": "2025-01-10T14:32:00",
+    "FechaActualizacion": null,
+    "Proveedor": "TextilCorp",
+    "CodigoBarra": "1234567890123",
+    "Sku": "CAM-001",
+    "Activo": true
+  },
+  {
+    "Id": 2,
+    "Nombre": "Laptop Lenovo ThinkPad",
+    "Precio": 3899.0,
+    "Cantidad": 4,
+    "Categoria": 3,
+    "Descripcion": "Laptop de alto rendimiento",
+    "FechaCreacion": "2025-01-11T10:18:00",
+    "FechaActualizacion": null,
+    "Proveedor": "Lenovo",
+    "CodigoBarra": "9876543210987",
+    "Sku": "LPT-3321",
+    "Activo": true
+  },
+  {
+    "Id": 3,
+    "Nombre": "Agua Mineral 600ml",
+    "Precio": 2.5,
+    "Cantidad": 120,
+    "Categoria": 2,
+    "Descripcion": "Botella de agua mineral sin gas",
+    "FechaCreacion": "2025-01-12T08:12:00",
+    "FechaActualizacion": null,
+    "Proveedor": "SanLuisCorp",
+    "CodigoBarra": "5554443332221",
+    "Sku": "AGU-600",
+    "Activo": true
+  },
+  {
+    "Id": 4,
+    "Nombre": "Audífonos Bluetooth",
+    "Precio": 149.9,
+    "Cantidad": 25,
+    "Categoria": 3,
+    "Descripcion": "Audífonos inalámbricos con micrófono",
+    "FechaCreacion": "2025-01-15T09:45:00",
+    "FechaActualizacion": null,
+    "Proveedor": "SoundMax",
+    "CodigoBarra": "1112223334445",
+    "Sku": "AUD-BT1",
+    "Activo": true
+  }
+]

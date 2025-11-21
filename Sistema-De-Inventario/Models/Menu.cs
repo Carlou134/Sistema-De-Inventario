@@ -18,8 +18,10 @@ namespace Sistema_De_Inventario.Models
             Console.Write("Elija una opción: ");
         }
 
-        public static void ElegirOpcion(byte opcion, InventarioService inventarioService)
+        public async static Task ElegirOpcion(byte opcion, InventarioService inventarioService, ArchivoService archivoService)
         {
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
             if(Enum.IsDefined(typeof(OpcionesMenu), (int)opcion))
             {
                 switch ((OpcionesMenu)opcion)
@@ -30,8 +32,8 @@ namespace Sistema_De_Inventario.Models
                     case OpcionesMenu.Buscar: Buscar(inventarioService); break;
                     case OpcionesMenu.Actualizar: Actualizar(inventarioService); break;
                     case OpcionesMenu.Eliminar: Eliminar(inventarioService); break;
-                    case OpcionesMenu.Guardar: Console.WriteLine("Opcion 6 elegida"); break;
-                    case OpcionesMenu.Cargar: Console.WriteLine("Opcion 7 elegida"); break;
+                    case OpcionesMenu.Guardar: ExportarReporte(inventarioService, archivoService); break;
+                    case OpcionesMenu.Cargar: await archivoService.CargarDatos(inventarioService, cancellationTokenSource.Token); break;
                 }
             }
             else
@@ -40,7 +42,7 @@ namespace Sistema_De_Inventario.Models
             }
         }
 
-        public static void DesplegarMenu(InventarioService inventarioService)
+        public async static Task DesplegarMenu(InventarioService inventarioService, ArchivoService archivoService)
         {
             while (true)
             {
@@ -48,7 +50,7 @@ namespace Sistema_De_Inventario.Models
                 var opcionElegida = Console.ReadLine()!;
 
                 if (!string.IsNullOrWhiteSpace(opcionElegida) 
-                    && byte.TryParse(opcionElegida, out byte opcion)) ElegirOpcion(opcion, inventarioService);
+                    && byte.TryParse(opcionElegida, out byte opcion)) await ElegirOpcion(opcion, inventarioService, archivoService);
                 else Console.WriteLine("Ingrese una opción valida!");
             }
         }
@@ -162,6 +164,11 @@ namespace Sistema_De_Inventario.Models
         {
             int idElegido = RestriccionesService.ValidarInputEntero("\nIngrese el id del producto que desea eliminar: ");
             inventarioService.Eliminar(idElegido);
+        }
+
+        public static void ExportarReporte(InventarioService inventarioService, ArchivoService archivoService)
+        {
+            archivoService.ExportarReporteInventario(inventarioService);
         }
     }
 

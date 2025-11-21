@@ -72,5 +72,19 @@ namespace Sistema_De_Inventario.Services
             }
         }
 
+        public void Limpiar()
+        {
+            this._productos.Clear();
+            this.Id = 0;
+        }
+
+        public int getId() => this.Id;
+
+        public void SetId(int id) => this.Id = id;
+
+        public void AgregarDesdeArchivo(IProducto producto)
+        {
+            this._productos.Add(producto);
+        }
     }
 }
