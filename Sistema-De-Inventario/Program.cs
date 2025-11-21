@@ -2,4 +2,5 @@
 using Sistema_De_Inventario.Services;
 
 InventarioService inventarioService = new InventarioService();
-Menu.DesplegarMenu(inventarioService);
+ArchivoService archivoService = new ArchivoService();
+await Menu.DesplegarMenu(inventarioService, archivoService);
