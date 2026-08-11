@@ -44,3 +44,11 @@ git clone https://github.com/Carlou134/Sistema-De-Inventario.git
 cd Sistema-De-Inventario
 dotnet run --project Sistema-De-Inventario
 ```
+
+### Visual Studio 2022
+
+1. Clone the repo: `git clone https://github.com/Carlou134/Sistema-De-Inventario.git`
+2. Open `Sistema-De-Inventario.sln` with Visual Studio 2022.
+3. Make sure you have the **.NET desktop development** workload installed (via Visual Studio Installer) and the **.NET 9** SDK.
+4. Set `Sistema-De-Inventario` as the startup project (right-click → *Set as Startup Project*), if it isn't already.
+5. Run with `F5` (with debugger) or `Ctrl+F5` (without debugger).
